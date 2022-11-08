@@ -8,6 +8,7 @@ import androidx.room.withTransaction
 import com.repo.trending.db.RepoDatabase
 import com.repo.trending.model.MediatorKey
 import com.repo.trending.model.Repo
+import com.repo.trending.network.Resource
 import com.repo.trending.repo.MediatorKeyRepo
 import com.repo.trending.repo.TrendAPIRepo
 import com.repo.trending.repo.TrendingRepo
@@ -15,6 +16,7 @@ import com.repo.trending.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -35,8 +37,13 @@ class RepoMediator(
             is MediatorResult.Success -> return pageData
             else -> pageData as Int
         }
+
         return try {
-            val response = trendAPIRepo.getTrendingRepo(page = page)
+            val tempResponse = trendAPIRepo.getTrendingRepo(page)
+            val response = when (tempResponse) {
+                is Resource.Success ->  tempResponse.values
+                is Resource.Failure -> throw Exception(tempResponse.errorBody?.string())
+            }
             val isLastPage =
                 response.items.isEmpty() || response.items.size < Constants.REPO_PAGE_SIZE
             repoDatabase.withTransaction {
