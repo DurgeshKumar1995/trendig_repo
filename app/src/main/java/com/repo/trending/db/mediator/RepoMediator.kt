@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.Calendar
 import java.util.Date
 
 @OptIn(ExperimentalPagingApi::class)
@@ -46,18 +47,26 @@ class RepoMediator(
             val isLastPage =
                 response.items.isEmpty() || (response.items.size < Constants.REPO_PAGE_SIZE)
             repoDatabase.withTransaction {
-                if (loadType == LoadType.REFRESH && ((sharedPreferences.getString(SharedPrefrence.shredPreferencesDateKey,null))!=DateUtils.getDate(Date()))) {
+                val dateStringFromShared = sharedPreferences.getString(SharedPrefrence.shredPreferencesDateKey,null)
+                val dateCurrent = Date()
+                dateCurrent.time = System.currentTimeMillis()
+                val currentDate = DateUtils.getDate(dateCurrent)
+                if (loadType == LoadType.REFRESH &&  dateStringFromShared!=currentDate) {
                     mediatorKeyRepo.clearAll()
                     trendingRepo.clearAll()
-                    sharedPreferences.edit().putString(SharedPrefrence.shredPreferencesDateKey,DateUtils.getDate(Date())).apply()
                 }
+                sharedPreferences.edit().putString(SharedPrefrence.shredPreferencesDateKey,currentDate).apply()
                 val prevKey = if (page == 1) null else page.minus(1)
                 val nextKey = if (isLastPage) null else page.plus(1)
                 val remoteKeys = response.items.map { repo ->
                     MediatorKey(repo.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                trendingRepo.insertAll(response.items)
+                try {
+                    trendingRepo.insertAll(response.items)
+                }catch (ignored:Exception){}
+                try {
                 mediatorKeyRepo.insertAll(remoteKeys)
+                }catch (ignored:Exception){}
                 MediatorResult.Success(isLastPage)
             }
 
@@ -95,7 +104,8 @@ class RepoMediator(
 
             state.anchorPosition?.let { position ->
                 state.closestItemToPosition(position)?.id?.let { id ->
-                    repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(id) }
+                    mediatorKeyRepo.getMediatorKey(id)
+//                    repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(id) }
                 }
             }
         }
@@ -106,7 +116,8 @@ class RepoMediator(
         return withContext(Dispatchers.IO) {
 
              state.lastItemOrNull()?.let { repo ->
-                repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(repo.id) }
+                 mediatorKeyRepo.getMediatorKey(repo.id)
+//                repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(repo.id) }
             }
         }
     }
