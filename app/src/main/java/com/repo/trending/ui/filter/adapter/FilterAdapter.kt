@@ -1,24 +1,14 @@
-package com.repo.trending.ui.repo_list.adapter
+package com.repo.trending.ui.filter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.repo.trending.databinding.ItemRepoBinding
 import com.repo.trending.model.Repo
 
-class RepoAdapter(private val clicked: (Repo?) -> Unit): PagingDataAdapter<Repo, RepoAdapter.RepoViewHolder>(DIFF_CALLBACK) {
+class FilterAdapter(private val clicked: (Repo?) -> Unit):RecyclerView.Adapter<FilterAdapter.RepoViewHolder>() {
 
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Repo>() {
-            override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean =
-                oldItem == newItem
-        }
-    }
+    private val mainList = ArrayList<Repo>()
 
     inner class RepoViewHolder(private val binding: ItemRepoBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(data: Repo, position: Int) {
@@ -42,7 +32,18 @@ class RepoAdapter(private val clicked: (Repo?) -> Unit): PagingDataAdapter<Repo,
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        val item = getItem(position)?:return
+        val item = mainList[position]?:return
         holder.bind(item,position)
+    }
+
+    override fun getItemCount(): Int =mainList.size
+
+    fun setList(list: List<Repo>?){
+        val tempList  = list?: emptyList()
+        updateList(tempList,mainList).dispatchUpdatesTo(this)
+        mainList.run {
+            clear()
+            addAll(tempList)
+        }
     }
 }

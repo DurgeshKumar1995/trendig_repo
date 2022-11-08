@@ -1,8 +1,10 @@
 package com.repo.trending.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.repo.trending.model.Repo
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RepoDao {
@@ -26,4 +28,7 @@ interface RepoDao {
 
     @Query("DELETE FROM repo")
     suspend fun clearAll()
+
+    @Query("SELECT * FROM repo WHERE name LIKE '%' || :search || '%'")
+    suspend fun getRepoByFilterString(search:String): List<Repo>
 }

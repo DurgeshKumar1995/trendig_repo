@@ -16,22 +16,10 @@ class TrendingImpl(private val repoDao: RepoDao):TrendingRepo {
     override suspend fun update(item: Repo) = repoDao.update(item)
     override fun getRepos(): PagingSource<Int, Repo> = repoDao.getRepos()
 
-//    @OptIn(ExperimentalPagingApi::class)
-//    override fun getRepos(): Flow<PagingData<Repo>> {
-//       return Pager(
-//            config = PagingConfig(
-//                pageSize = 15,
-//                enablePlaceholders = false,
-//                initialLoadSize = 15
-//            ),
-//           remoteMediator = repoMediator
-//        ) {
-//            repoDao.getRepos()
-//        }.flow
-//    }
 
     override suspend fun insertAll(items: List<Repo>) = repoDao.insertAll(items)
 
     override suspend fun clearAll()= repoDao.clearAll()
+    override suspend fun getRepoByFilterString(search: String)= repoDao.getRepoByFilterString(search)
 
 }

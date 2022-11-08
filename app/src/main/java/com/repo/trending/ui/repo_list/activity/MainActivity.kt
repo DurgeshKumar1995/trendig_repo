@@ -1,14 +1,15 @@
 package com.repo.trending.ui.repo_list.activity
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.repo.trending.databinding.ActivityMainBinding
 import com.repo.trending.model.Repo
+import com.repo.trending.ui.filter.view.FilterActivity
 import com.repo.trending.ui.repo_list.adapter.RepoAdapter
 import com.repo.trending.ui.repo_list.adapter.LoadStateAdapter
 import com.repo.trending.ui.repo_list.view_model.MainViewModel
@@ -42,21 +43,15 @@ class MainActivity : AppCompatActivity() {
 
             viewModel.getRepos().collectLatest {
                 adapter.submitData(it)
-                binding.apply {
-                    recyclerView.isVisible = true
-                  //  progress.isVisible = false
-                }
             }
         }
 
-
-
-        adapter.addLoadStateListener { loadState ->
-
-//            if (loadState.append.endOfPaginationReached) {
-//                handleVisibility(adapter.itemCount < 1)
-//            }
+        binding.btnSearch.setOnClickListener {
+            it.isEnabled = false
+            val intent = Intent(applicationContext,FilterActivity::class.java)
+            startForResult.launch(intent)
         }
+
 
     }
 
@@ -69,14 +64,12 @@ class MainActivity : AppCompatActivity() {
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+
             if (result.resultCode == Activity.RESULT_OK) {
                 adapter.refresh()
             }
+            binding.btnSearch.isEnabled = true
         }
 
-    private fun handleVisibility(isEmpty:Boolean){
-        binding.recyclerView.isVisible = !isEmpty
-        binding.txtEmpty.isVisible = isEmpty
 
-    }
 }

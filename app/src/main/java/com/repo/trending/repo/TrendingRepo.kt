@@ -1,7 +1,9 @@
 package com.repo.trending.repo
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import com.repo.trending.model.Repo
+import kotlinx.coroutines.flow.Flow
 
 interface TrendingRepo {
 
@@ -11,4 +13,6 @@ interface TrendingRepo {
     fun getRepos(): PagingSource<Int, Repo>
     suspend fun insertAll(items: List<Repo>)
     suspend fun clearAll()
+
+    suspend fun getRepoByFilterString(search:String): List<Repo>
 }
