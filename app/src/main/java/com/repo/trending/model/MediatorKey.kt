@@ -4,13 +4,12 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
-@Entity(tableName = "key")
+@Entity(tableName = "remote_key")
 @Parcelize
-data class MediaterKey(
+data class MediatorKey(
     @PrimaryKey
-    val id: String,
-    val nextKey: Int,
-    val prevKey: Int
+    val id: Long,
+    val nextKey: Int?,
+    val prevKey: Int?
 ):Parcelable

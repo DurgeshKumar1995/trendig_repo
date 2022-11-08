@@ -34,23 +34,25 @@ class MainActivity : AppCompatActivity() {
         )
 
         lifecycleScope.launch {
-            viewModel.data.collectLatest {
+//            viewModel.data.collectLatest {
+//                adapter.submitData(it)
+//            }
+            viewModel.getRepos().collectLatest {
                 adapter.submitData(it)
+                binding.apply {
+                    recyclerView.isVisible = true
+                  //  progress.isVisible = false
+                }
             }
         }
 
-        viewModel.refreshPoint.observe(this) {
-            it?.run {
-                adapter.refresh()
-            }
-        }
 
 
         adapter.addLoadStateListener { loadState ->
 
-            if (loadState.append.endOfPaginationReached) {
-                handleVisibility(adapter.itemCount < 1)
-            }
+//            if (loadState.append.endOfPaginationReached) {
+//                handleVisibility(adapter.itemCount < 1)
+//            }
         }
 
     }
@@ -70,5 +72,6 @@ class MainActivity : AppCompatActivity() {
     private fun handleVisibility(isEmpty:Boolean){
         binding.recyclerView.isVisible = !isEmpty
         binding.txtEmpty.isVisible = isEmpty
+
     }
 }

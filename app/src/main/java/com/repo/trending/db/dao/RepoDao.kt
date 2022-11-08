@@ -1,4 +1,4 @@
-package com.repo.trending.db
+package com.repo.trending.db.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
@@ -6,12 +6,14 @@ import com.repo.trending.model.Repo
 
 @Dao
 interface RepoDao {
-    @Query("SELECT * FROM repo ORDER BY id ASC LIMIT :limit OFFSET :offset")
-    suspend fun getNoteList(limit: Int, offset: Int): List<Repo>
 
     @Transaction
-    @Query("SELECT * FROM repo ORDER BY createdDate DESC")
-    fun getNotes(): PagingSource<Int,Repo>
+    @Query("SELECT * FROM repo")
+    fun getRepos(): PagingSource<Int,Repo>
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(items: List<Repo>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: Repo): Long
@@ -21,4 +23,7 @@ interface RepoDao {
 
     @Update
     suspend fun update(item: Repo): Int
+
+    @Query("DELETE FROM repo")
+    suspend fun clearAll()
 }

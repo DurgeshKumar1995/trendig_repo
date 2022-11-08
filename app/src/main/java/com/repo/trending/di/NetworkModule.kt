@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.repo.trending.network.BaseRepository
 import com.repo.trending.network.InterfaceGlobalAPI
-import com.repo.trending.repo.TrendAPIPagerRepo
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import com.repo.trending.BuildConfig
@@ -26,12 +25,11 @@ object NetworkModule {
         single { provideBaseRepository() }
         single { provideRetrofit(get(), get()) }
         single { provideInterfaceGlobalAPI(get()) }
-        single { provideTrendAPIPagerRepo(get()) }
 
 
     }
 
-    fun provideDefaultOkhttpClient(): OkHttpClient {
+    private fun provideDefaultOkhttpClient(): OkHttpClient {
 
 
         return if (BuildConfig.DEBUG) {
@@ -55,10 +53,10 @@ object NetworkModule {
     }
 
 
-    fun provideGson() = GsonBuilder()
+    private fun provideGson() = GsonBuilder()
         .create()
 
-    fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit {
+    private fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
@@ -71,8 +69,6 @@ object NetworkModule {
         retrofit.create(InterfaceGlobalAPI::class.java)
 
     private fun provideBaseRepository(): BaseRepository = BaseRepository()
-
-    private fun provideTrendAPIPagerRepo(globalAPI: InterfaceGlobalAPI): TrendAPIPagerRepo = TrendAPIPagerRepo(globalAPI)
 
 
 }

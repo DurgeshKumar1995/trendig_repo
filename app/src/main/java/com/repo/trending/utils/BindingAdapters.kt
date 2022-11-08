@@ -26,25 +26,6 @@ object BindingAdapters {
         }
     }
 
-    @JvmStatic
-    @BindingAdapter("updateMaxLine")
-    fun handleMaxLine(view: TextView,note: Repo?){
-
-        if (note ==null ||note.imageUrl.isNullOrEmpty()){
-            view.run {
-                ellipsize = null
-                maxLines = Int.MAX_VALUE
-            }
-
-        }else{
-
-            view.run {
-                ellipsize = TextUtils.TruncateAt.END
-                maxLines = 2
-            }
-        }
-        view.text = note?.description
-    }
 
 
 

@@ -1,17 +1,23 @@
 package com.repo.trending.ui.repo_list.view_model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
+import androidx.paging.*
+import com.repo.trending.db.mediator.RepoMediator
+import com.repo.trending.model.Repo
 import com.repo.trending.repo.TrendingRepo
+import kotlinx.coroutines.flow.Flow
 
-class MainViewModel( noteRepo: TrendingRepo) : ViewModel() {
+@OptIn(ExperimentalPagingApi::class)
+class MainViewModel(private val repoMediator: RepoMediator, private val trendingRepo: TrendingRepo) : ViewModel() {
 
-    val data = noteRepo.getNotes().cachedIn(viewModelScope)
+//    val data = trendingRepo.getRepos().cachedIn(viewModelScope)
 
+    fun getRepos():Flow<PagingData<Repo>> = Pager(
+        config = PagingConfig(30, enablePlaceholders = false, initialLoadSize = 60),
+        remoteMediator = repoMediator
+    ) {
+        trendingRepo.getRepos()
+    }.flow.cachedIn(viewModelScope)
 
-    private val _refreshPoint = MutableLiveData<Boolean>()
-    val refreshPoint :LiveData<Boolean> = _refreshPoint
 }
