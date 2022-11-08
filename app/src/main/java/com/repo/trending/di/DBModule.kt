@@ -17,6 +17,6 @@ object DBModule {
         // BirdsDAO
         single { get<RepoDatabase>().repoDao() }
         single { get<RepoDatabase>().remoteMediatorDao() }
-        factory { RepoMediator(get(),get(),get(),get()) }
+        factory { RepoMediator(get(),get(),get(),get(),get()) }
     }
 }

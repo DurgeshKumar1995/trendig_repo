@@ -1,30 +1,33 @@
 package com.repo.trending.db.mediator
 
+import android.content.SharedPreferences
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.repo.trending.db.RepoDatabase
+import com.repo.trending.di.SharedPrefrence
 import com.repo.trending.model.MediatorKey
 import com.repo.trending.model.Repo
 import com.repo.trending.repo.MediatorKeyRepo
 import com.repo.trending.repo.TrendAPIRepo
 import com.repo.trending.repo.TrendingRepo
 import com.repo.trending.utils.Constants
+import com.repo.trending.utils.DateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
-import java.util.concurrent.TimeUnit
+import java.util.Date
 
 @OptIn(ExperimentalPagingApi::class)
 class RepoMediator(
     private val mediatorKeyRepo: MediatorKeyRepo,
     private val trendingRepo: TrendingRepo,
     private val trendAPIRepo: TrendAPIRepo,
-    private val repoDatabase: RepoDatabase
+    private val repoDatabase: RepoDatabase,
+    private val sharedPreferences: SharedPreferences
 ) : RemoteMediator<Int, Repo>() {
 
     override suspend fun initialize(): InitializeAction {
@@ -41,11 +44,12 @@ class RepoMediator(
             val response = trendAPIRepo.getTrendingRepo(page)
 
             val isLastPage =
-                response.items.isEmpty() || response.items.size < Constants.REPO_PAGE_SIZE
+                response.items.isEmpty() || (response.items.size < Constants.REPO_PAGE_SIZE)
             repoDatabase.withTransaction {
-                if (loadType == LoadType.REFRESH) {
+                if (loadType == LoadType.REFRESH && ((sharedPreferences.getString(SharedPrefrence.shredPreferencesDateKey,null))!=DateUtils.getDate(Date()))) {
                     mediatorKeyRepo.clearAll()
                     trendingRepo.clearAll()
+                    sharedPreferences.edit().putString(SharedPrefrence.shredPreferencesDateKey,DateUtils.getDate(Date())).apply()
                 }
                 val prevKey = if (page == 1) null else page.minus(1)
                 val nextKey = if (isLastPage) null else page.plus(1)
@@ -54,8 +58,9 @@ class RepoMediator(
                 }
                 trendingRepo.insertAll(response.items)
                 mediatorKeyRepo.insertAll(remoteKeys)
+                MediatorResult.Success(isLastPage)
             }
-            MediatorResult.Success(isLastPage)
+
         } catch (e: IOException) {
             MediatorResult.Error(e)
         } catch (e: HttpException) {
@@ -72,11 +77,12 @@ class RepoMediator(
             LoadType.REFRESH -> {
                 getRefreshData(state)?.nextKey?.minus(1) ?: 1
             }
-            LoadType.APPEND -> {
-                getPrependData(state)?.prevKey
-                    ?: MediatorResult.Success(endOfPaginationReached = false)
-            }
             LoadType.PREPEND -> {
+//                getPrependData(state)?.prevKey
+//                    ?: MediatorResult.Success(endOfPaginationReached = false)
+                return MediatorResult.Success(true)
+            }
+            LoadType.APPEND -> {
                 getAppendData(state)?.nextKey
                     ?: MediatorResult.Success(endOfPaginationReached = true)
             }
@@ -86,9 +92,10 @@ class RepoMediator(
     private suspend fun getRefreshData(state: PagingState<Int, Repo>): MediatorKey? {
 
         return withContext(Dispatchers.IO) {
+
             state.anchorPosition?.let { position ->
-                state.closestItemToPosition(position)?.id?.let {
-                    mediatorKeyRepo.getMediatorKey(it)
+                state.closestItemToPosition(position)?.id?.let { id ->
+                    repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(id) }
                 }
             }
         }
@@ -97,10 +104,9 @@ class RepoMediator(
 
     private suspend fun getAppendData(state: PagingState<Int, Repo>): MediatorKey? {
         return withContext(Dispatchers.IO) {
-            state.pages.lastOrNull {
-                it.data.isNotEmpty()
-            }?.data?.lastOrNull()?.let { repo ->
-                mediatorKeyRepo.getMediatorKey(repo.id)
+
+             state.lastItemOrNull()?.let { repo ->
+                repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(repo.id) }
             }
         }
     }
@@ -108,13 +114,9 @@ class RepoMediator(
     private suspend fun getPrependData(state: PagingState<Int, Repo>): MediatorKey? {
 
         return withContext(Dispatchers.IO) {
-//            state.pages.first().data.first().let {
-//                mediatorKeyRepo.getMediatorKey(it.id)
-//            }
-            state.pages.firstOrNull {
-                it.data.isNotEmpty()
-            }?.data?.firstOrNull()?.let { repo ->
-                mediatorKeyRepo.getMediatorKey(repo.id)
+
+            state.firstItemOrNull()?.let { repo ->
+                repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(repo.id) }
             }
         }
     }

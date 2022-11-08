@@ -12,10 +12,10 @@ interface RepoDao {
     fun getRepos(): PagingSource<Int,Repo>
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAll(items: List<Repo>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(item: Repo): Long
 
     @Delete

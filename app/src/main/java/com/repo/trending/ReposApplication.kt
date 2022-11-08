@@ -3,6 +3,7 @@ package com.repo.trending
 import android.app.Application
 import com.repo.trending.di.DBModule
 import com.repo.trending.di.NetworkModule
+import com.repo.trending.di.SharedPrefrence
 import com.repo.trending.di.ViewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,7 +17,7 @@ class ReposApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@ReposApplication)
-            modules(DBModule.reposAppModule, ViewModelModules.viewModels,NetworkModule.networkModule)
+            modules(DBModule.reposAppModule, ViewModelModules.viewModels,NetworkModule.networkModule,SharedPrefrence.sharedPreferencesModule)
         }
     }
 

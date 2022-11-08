@@ -34,9 +34,12 @@ class MainActivity : AppCompatActivity() {
         )
 
         lifecycleScope.launch {
-//            viewModel.data.collectLatest {
-//                adapter.submitData(it)
-//            }
+
+            viewModel.refreshPoint.observe(this@MainActivity){
+                if (it==true)
+                    adapter.refresh()
+            }
+
             viewModel.getRepos().collectLatest {
                 adapter.submitData(it)
                 binding.apply {
@@ -58,8 +61,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun actionOnItemClick(repo: Repo? = null) {
-
-
+        if (repo!=null) {
+            repo.isChecked = true
+            viewModel.updateRepo(repo)
+        }
     }
 
     private val startForResult =

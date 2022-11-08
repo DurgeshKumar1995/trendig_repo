@@ -26,74 +26,56 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen_8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text"
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/image_size"
+                android:layout_height="@dimen/image_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/note"/>
+                android:visibility="gone"
+                android:id="@+id/image"
+                app:loadImage="@{repo.owner.avatar_url}"
+                tools:visibility="visible"
+                tools:src="@drawable/ic_launcher_foreground"/>
 
-<!--            <androidx.appcompat.widget.AppCompatImageView-->
-<!--                android:layout_width="@dimen/image_size"-->
-<!--                android:layout_height="@dimen/image_size"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                android:visibility="gone"-->
-<!--                android:id="@+id/image"-->
-<!--                app:loadImage="@{repo.imageUrl}"-->
-<!--                tools:visibility="visible"-->
-<!--                tools:src="@drawable/ic_launcher_foreground"/>-->
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_19sp"
+                android:textColor="@color/black"
+                tools:text="@string/n_a"
+                android:text="@{repo.name}"
+                android:layout_marginHorizontal="@dimen/dimen_8dp"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/txt_title"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="@dimen/text_size_19sp"-->
-<!--                android:textColor="@color/black"-->
-<!--                tools:text="@string/n_a"-->
-<!--                android:text="@{repo.title}"-->
-<!--                android:layout_marginHorizontal="@dimen/dimen_8dp"-->
-<!--                app:layout_constraintStart_toEndOf="@id/image"-->
-<!--                app:layout_constraintEnd_toStartOf="@id/txt_edit_tag"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/txt_edit_tag"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="@dimen/text_size_14sp"-->
-<!--                tools:text="@string/n_a"-->
-<!--                android:text="@string/edited"-->
-<!--                android:visibility="@{repo.editTag ?View.VISIBLE:View.GONE}"-->
-<!--                android:layout_marginEnd="@dimen/dimen_8dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/txt_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_16sp"
+                tools:text="@string/n_a"
+                android:maxLines="5"
+                android:text="@{repo.description,default = @string/n_a}"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginHorizontal="@dimen/dimen_8dp"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/txt_description"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="@dimen/text_size_16sp"-->
-<!--                tools:text="@string/n_a"-->
-<!--                app:updateMaxLine="@{repo}"-->
-<!--                android:text="@{repo.description}"-->
-<!--                android:layout_marginTop="@dimen/dimen_5dp"-->
-<!--                android:layout_marginHorizontal="@dimen/dimen_8dp"-->
-<!--                app:layout_constraintStart_toEndOf="@id/image"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/txt_title" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/txt_date"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="@dimen/text_size_14sp"-->
-<!--                android:textStyle="italic"-->
-<!--                android:text="@{DateUtils.getDate(repo.createdDate),default = @string/n_a}"-->
-<!--                android:layout_marginEnd="@dimen/dimen_8dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/txt_description" />-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/im_checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_checked"
+                android:visibility="@{repo.checked==true?View.VISIBLE:View.GONE}"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginEnd="@dimen/dimen_8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

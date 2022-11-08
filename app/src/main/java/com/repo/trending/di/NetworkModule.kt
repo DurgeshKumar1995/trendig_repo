@@ -1,11 +1,14 @@
 package com.repo.trending.di
 
+import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.repo.trending.network.InterfaceGlobalAPI
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import com.repo.trending.BuildConfig
+import com.repo.trending.utils.Constants
+import okhttp3.Interceptor
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,12 +42,24 @@ object NetworkModule {
                 .callTimeout(WaitTimeOut, TimeUnit.SECONDS)
                 .connectTimeout(ConnTimeOut, TimeUnit.SECONDS)
                 .readTimeout(WaitTimeOut, TimeUnit.SECONDS)
+                .addInterceptor { chain: Interceptor.Chain ->
+                    val request = chain.request().newBuilder()
+                        .addHeader("authorization", "Basic ${Constants.REPO_SHARE_KEY}")
+                        .build()
+                    chain.proceed(request)
+                }
                 .build()
         } else {
             OkHttpClient.Builder()
                 .callTimeout(WaitTimeOut, TimeUnit.SECONDS)
                 .connectTimeout(ConnTimeOut, TimeUnit.SECONDS)
                 .readTimeout(WaitTimeOut, TimeUnit.SECONDS)
+                .addInterceptor { chain: Interceptor.Chain ->
+                    val request = chain.request().newBuilder()
+                        .addHeader("authorization", "Basic ${Constants.REPO_SHARE_KEY}")
+                        .build()
+                    chain.proceed(request)
+                }
                 .build()
         }
 

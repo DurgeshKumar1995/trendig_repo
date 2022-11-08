@@ -21,12 +21,14 @@ class RepoAdapter(private val clicked: (Repo?) -> Unit): PagingDataAdapter<Repo,
     }
 
     inner class NoteViewHolder(private val binding: ItemRepoBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(data: Repo?) {
+        fun bind(data: Repo, position: Int) {
             binding.repo = data
 
             binding.let {
                 it.root.setOnClickListener {
+                    data.isChecked =true
                     clicked.invoke(data)
+                    notifyItemChanged(position)
                 }
             }
 
@@ -40,7 +42,7 @@ class RepoAdapter(private val clicked: (Repo?) -> Unit): PagingDataAdapter<Repo,
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        val item = getItem(position)?:return
+        holder.bind(item,position)
     }
 }
