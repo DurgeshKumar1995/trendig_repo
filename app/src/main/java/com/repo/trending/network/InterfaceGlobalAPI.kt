@@ -19,8 +19,8 @@ interface InterfaceGlobalAPI {
 
     @GET("search/repositories")
     suspend fun getTrendingRepo(
-        @Path(PAGE_KEY) page: Int,
-        @Path(QUERY_KEY) queryKey: String= QUERY_VALUE,
+        @Query(PAGE_KEY) page: Int,
+        @Query(QUERY_KEY) queryKey: String= QUERY_VALUE,
         @Query(ORDER_KEY) order:String=ORDER_VALUE,
         @Query(SORT_KEY) sort:String=SORT_VALUE
     ): TrendRepoResponse

@@ -9,7 +9,7 @@ import org.koin.dsl.module
 object DBModule {
 
     private const val DATABASE_NAME  = "repos_db"
-    val notesAppModule = module {
+    val reposAppModule = module {
 
         // Room Database
         single { Room.databaseBuilder(androidApplication(), RepoDatabase::class.java, DATABASE_NAME).build() }

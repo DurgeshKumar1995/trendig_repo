@@ -16,7 +16,7 @@ class ReposApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@ReposApplication)
-            modules(DBModule.notesAppModule, ViewModelModules.viewModels,NetworkModule.networkModule)
+            modules(DBModule.reposAppModule, ViewModelModules.viewModels,NetworkModule.networkModule)
         }
     }
 

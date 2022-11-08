@@ -18,7 +18,7 @@ object ViewModelModules {
 
     val viewModels: Module = module {
 
-        single<TrendAPIRepo> { TrendAPIImpl(get(),get()) }
+        single<TrendAPIRepo> { TrendAPIImpl(get()) }
         single<TrendingRepo> { TrendingImpl(get()) }
         single<MediatorKeyRepo> { MediatorKeyImpl(get()) }
         viewModel { MainViewModel(get(),get()) }

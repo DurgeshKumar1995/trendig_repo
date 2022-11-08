@@ -2,7 +2,6 @@ package com.repo.trending.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.repo.trending.network.BaseRepository
 import com.repo.trending.network.InterfaceGlobalAPI
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,7 +21,6 @@ object NetworkModule {
 
         single { provideDefaultOkhttpClient() }
         single { provideGson() }
-        single { provideBaseRepository() }
         single { provideRetrofit(get(), get()) }
         single { provideInterfaceGlobalAPI(get()) }
 
@@ -67,8 +65,5 @@ object NetworkModule {
 
     private fun provideInterfaceGlobalAPI(retrofit: Retrofit): InterfaceGlobalAPI =
         retrofit.create(InterfaceGlobalAPI::class.java)
-
-    private fun provideBaseRepository(): BaseRepository = BaseRepository()
-
 
 }
