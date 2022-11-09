@@ -29,4 +29,8 @@ interface RepoDao {
 
     @Query("SELECT * FROM repo WHERE name LIKE '%' || :search || '%'")
     suspend fun getRepoByFilterString(search:String): List<Repo>
+
+
+    @Query("SELECT COUNT(*) FROM repo")
+    suspend fun getCount(): Int
 }

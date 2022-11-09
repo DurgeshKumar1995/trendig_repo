@@ -40,5 +40,29 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="@dimen/dimen_16dp"/>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_empty"
+            android:textSize="25sp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:text="@string/no_record_found"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

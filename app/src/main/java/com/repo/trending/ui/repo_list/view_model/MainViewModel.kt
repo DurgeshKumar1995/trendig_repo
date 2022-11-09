@@ -12,13 +12,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagingApi::class)
-class MainViewModel(private val repoMediator: RepoMediator, private val trendingRepo: TrendingDBRepo) : ViewModel() {
+class MainViewModel(
+    private val repoMediator: RepoMediator,
+    private val trendingRepo: TrendingDBRepo
+) : ViewModel() {
 
 
     private val _updatePoint = MutableLiveData<Boolean>()
-    val refreshPoint : LiveData<Boolean> = _updatePoint
+    val refreshPoint: LiveData<Boolean> = _updatePoint
 
-    fun getRepos():Flow<PagingData<Repo>> = Pager(
+    fun getRepos(): Flow<PagingData<Repo>> = Pager(
         config = PagingConfig(30, enablePlaceholders = false),
         remoteMediator = repoMediator
     ) {
@@ -26,10 +29,14 @@ class MainViewModel(private val repoMediator: RepoMediator, private val trending
     }.flow.cachedIn(viewModelScope)
 
 
-    fun updateRepo(repo: Repo){
+    fun updateRepo(repo: Repo) {
         viewModelScope.launch {
-           val value = trendingRepo.update(repo)
-            _updatePoint.postValue(value>0)
+            try {
+                val value = trendingRepo.update(repo)
+                _updatePoint.postValue(value > 0)
+            } catch (ignored: Exception) {
+
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.annotation.CheckResult
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.repo.trending.databinding.ActivityFilterBinding
@@ -34,13 +35,34 @@ class FilterActivity : AppCompatActivity() {
 
         binding.edtTitle.textChanges().debounce(300)
             .onEach {
+                binding.progressBar.isVisible = true
                 viewModel.getFilterData(it.toString().trim())
             }
             .launchIn(lifecycleScope)
 
         viewModel.dataList.observe(this){
             it?.run {
+                binding.progressBar.isVisible = false
                 adapter.setList(this)
+                if (isNullOrEmpty()){
+                    binding.txtEmpty.isVisible = true
+                    binding.recyclerView.isVisible = true
+                }else{
+                    binding.txtEmpty.isVisible = false
+                    binding.recyclerView.isVisible = true
+                }
+            }
+        }
+        viewModel.refreshPoint.observe(this){
+            it?.run {
+                binding.progressBar.isVisible = false
+            }
+        }
+
+        viewModel.recordCount.observe(this){
+            it?.run {
+               binding.edtTitle.isEnabled =  (this >0)
+               binding.txtEmpty.isVisible =  (this <1)
             }
         }
 
@@ -60,6 +82,7 @@ class FilterActivity : AppCompatActivity() {
 
     private fun actionOnItemClick(repo: Repo? = null) {
         if (repo!=null) {
+            binding.progressBar.isVisible = true
             repo.isChecked = true
             viewModel.updateRepo(repo)
         }

@@ -18,5 +18,6 @@ class TrendingDBImpl(private val repoDao: RepoDao):TrendingDBRepo {
 
     override suspend fun clearAll()= repoDao.clearAll()
     override suspend fun getRepoByFilterString(search: String)= repoDao.getRepoByFilterString(search)
+    override suspend fun getCount() = repoDao.getCount()
 
 }

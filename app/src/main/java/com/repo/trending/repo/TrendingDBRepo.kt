@@ -13,4 +13,5 @@ interface TrendingDBRepo {
     suspend fun clearAll()
 
     suspend fun getRepoByFilterString(search:String): List<Repo>
+    suspend fun getCount(): Int
 }
