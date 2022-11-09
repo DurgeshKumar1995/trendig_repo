@@ -8,8 +8,8 @@ import com.repo.trending.impl.TrendRESTAPIImpl
 import com.repo.trending.repo.MediatorKeyRepo
 import com.repo.trending.repo.TrendRESTAPIRepo
 import com.repo.trending.repo.TrendingDBRepo
-import com.repo.trending.ui.filter.view_model.FilterViewModel
-import com.repo.trending.ui.repo_list.view_model.MainViewModel
+import com.repo.trending.ui.filter.FilterViewModel
+import com.repo.trending.ui.repo_list.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

@@ -1,6 +1,6 @@
 package com.repo.trending.repo
 
-import com.repo.trending.model.TrendRepoResponse
+import com.repo.trending.ui.common_model.TrendRepoResponse
 
 
 interface TrendRESTAPIRepo {

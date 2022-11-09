@@ -7,7 +7,7 @@
 
         <variable
             name="repo"
-            type="com.repo.trending.model.Repo" />
+            type="com.repo.trending.ui.common_model.Repo" />
         <import type="android.view.View"/>
         <import type="com.repo.trending.utils.DateUtils"/>
     </data>

@@ -25,13 +25,9 @@ object NetworkModule {
         single { provideGson() }
         single { provideRetrofit(get(), get()) }
         single { provideInterfaceGlobalAPI(get()) }
-
-
     }
 
     private fun provideDefaultOkhttpClient(): OkHttpClient {
-
-
         return if (BuildConfig.DEBUG) {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.HEADERS

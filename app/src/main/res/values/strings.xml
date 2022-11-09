@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">TrendingRepo</string>
     <string name="n_a">N/A</string>
-
     <string name="no_record_found">No record found</string>
     <string name="search">Search…</string>
     <string name="filter_screen_title">Filter Repo</string>

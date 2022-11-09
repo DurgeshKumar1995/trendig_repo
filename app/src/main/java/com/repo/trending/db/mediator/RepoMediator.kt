@@ -8,8 +8,8 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.repo.trending.db.RepoDatabase
 import com.repo.trending.di.SharedPrefrence
-import com.repo.trending.model.MediatorKey
-import com.repo.trending.model.Repo
+import com.repo.trending.ui.common_model.MediatorKey
+import com.repo.trending.ui.common_model.Repo
 import com.repo.trending.repo.MediatorKeyRepo
 import com.repo.trending.repo.TrendRESTAPIRepo
 import com.repo.trending.repo.TrendingDBRepo
@@ -42,7 +42,6 @@ class RepoMediator(
 
         return try {
             val response = trendAPIRepo.getTrendingRepo(page)
-
             val isLastPage =
                 response.items.isEmpty() || (response.items.size < Constants.REPO_PAGE_SIZE)
             repoDatabase.withTransaction {
@@ -79,7 +78,6 @@ class RepoMediator(
 
     }
 
-
     private suspend fun getPageData(loadType: LoadType, state: PagingState<Int, Repo>): Any {
         return when (loadType) {
             LoadType.REFRESH -> {
@@ -96,9 +94,7 @@ class RepoMediator(
     }
 
     private suspend fun getRefreshData(state: PagingState<Int, Repo>): MediatorKey? {
-
         return withContext(Dispatchers.IO) {
-
             state.anchorPosition?.let { position ->
                 state.closestItemToPosition(position)?.id?.let { id ->
                     mediatorKeyRepo.getMediatorKey(id)
@@ -110,7 +106,6 @@ class RepoMediator(
 
     private suspend fun getAppendData(state: PagingState<Int, Repo>): MediatorKey? {
         return withContext(Dispatchers.IO) {
-
              state.lastItemOrNull()?.let { repo ->
                  mediatorKeyRepo.getMediatorKey(repo.id)
             }

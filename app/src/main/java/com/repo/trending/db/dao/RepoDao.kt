@@ -2,15 +2,14 @@ package com.repo.trending.db.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
-import com.repo.trending.model.Repo
+import com.repo.trending.ui.common_model.Repo
 
 @Dao
 interface RepoDao {
 
     @Transaction
     @Query("SELECT * FROM repo")
-    fun getRepos(): PagingSource<Int,Repo>
-
+    fun getRepos(): PagingSource<Int, Repo>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAll(items: List<Repo>)
@@ -29,7 +28,6 @@ interface RepoDao {
 
     @Query("SELECT * FROM repo WHERE name LIKE '%' || :search || '%'")
     suspend fun getRepoByFilterString(search:String): List<Repo>
-
 
     @Query("SELECT COUNT(*) FROM repo")
     suspend fun getCount(): Int

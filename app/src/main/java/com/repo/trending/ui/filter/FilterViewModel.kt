@@ -1,10 +1,10 @@
-package com.repo.trending.ui.filter.view_model
+package com.repo.trending.ui.filter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.repo.trending.model.Repo
+import com.repo.trending.ui.common_model.Repo
 import com.repo.trending.repo.TrendingDBRepo
 import kotlinx.coroutines.launch
 

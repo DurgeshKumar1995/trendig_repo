@@ -1,4 +1,4 @@
-package com.repo.trending.ui.filter.view
+package com.repo.trending.ui.filter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,9 +9,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.repo.trending.databinding.ActivityFilterBinding
-import com.repo.trending.model.Repo
-import com.repo.trending.ui.filter.adapter.FilterAdapter
-import com.repo.trending.ui.filter.view_model.FilterViewModel
+import com.repo.trending.ui.common_model.Repo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
@@ -31,7 +29,6 @@ class FilterActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.recyclerView.adapter = adapter
-
 
         binding.edtTitle.textChanges().debounce(300)
             .onEach {
@@ -65,8 +62,6 @@ class FilterActivity : AppCompatActivity() {
                binding.txtEmpty.isVisible =  (this <1)
             }
         }
-
-
 
     }
 

@@ -1,4 +1,4 @@
-package com.repo.trending.ui.repo_list.adapter
+package com.repo.trending.ui.repo_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,11 +8,14 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.repo.trending.databinding.LoadStateViewBinding
 
-class LoadStateAdapter (private val adapter: RepoAdapter): LoadStateAdapter<com.repo.trending.ui.repo_list.adapter.LoadStateAdapter.LoadStateViewHolder>() {
+class LoadStateAdapter(private val adapter: RepoAdapter) :
+    LoadStateAdapter<com.repo.trending.ui.repo_list.LoadStateAdapter.LoadStateViewHolder>() {
 
-    inner class LoadStateViewHolder(private val binding: LoadStateViewBinding,
-                                    private val retryCallback: () -> Unit) :
-        RecyclerView.ViewHolder(binding.root){
+    inner class LoadStateViewHolder(
+        private val binding: LoadStateViewBinding,
+        private val retryCallback: () -> Unit
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.retryButton.setOnClickListener { retryCallback() }
         }
@@ -26,13 +29,14 @@ class LoadStateAdapter (private val adapter: RepoAdapter): LoadStateAdapter<com.
                 errorMsg.text = (loadState as? LoadState.Error)?.error?.message
             }
         }
-        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         return LoadStateViewHolder(
             LoadStateViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        ){ adapter.retry() }
+        ) { adapter.retry() }
     }
 
-    override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) = holder.bind(loadState)
+    override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) =
+        holder.bind(loadState)
 }

@@ -4,10 +4,8 @@
     <dimen name="dimen_8dp">8dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>
-
     <dimen name="text_size_16sp">16sp</dimen>
     <dimen name="text_size_19sp">19sp</dimen>
     <dimen name="text_size_25sp">25sp</dimen>
-
     <dimen name="image_size">100dp</dimen>
 </resources>

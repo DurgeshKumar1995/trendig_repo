@@ -16,12 +16,12 @@
         android:theme="@style/Theme.TrendingRepo"
         tools:targetApi="31">
         <activity
-            android:name=".ui.filter.view.FilterActivity"
+            android:name=".ui.filter.FilterActivity"
             android:exported="false"
             android:label="@string/filter_screen_title">
         </activity>
         <activity
-            android:name=".ui.repo_list.activity.MainActivity"
+            android:name=".ui.repo_list.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

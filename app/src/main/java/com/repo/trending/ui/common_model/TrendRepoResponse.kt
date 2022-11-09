@@ -1,4 +1,5 @@
-package com.repo.trending.model
+package com.repo.trending.ui.common_model
+
 
 data class TrendRepoResponse(
     val incomplete_results: Boolean?,

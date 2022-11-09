@@ -1,4 +1,4 @@
-package com.repo.trending.ui.repo_list.adapter
+package com.repo.trending.ui.repo_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.repo.trending.databinding.ItemRepoBinding
-import com.repo.trending.model.Repo
+import com.repo.trending.ui.common_model.Repo
 
-class RepoAdapter(private val clicked: (Repo?) -> Unit): PagingDataAdapter<Repo, RepoAdapter.RepoViewHolder>(DIFF_CALLBACK) {
+class RepoAdapter(private val clicked: (Repo?) -> Unit): PagingDataAdapter<Repo, RepoAdapter.RepoViewHolder>(
+    DIFF_CALLBACK
+) {
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Repo>() {

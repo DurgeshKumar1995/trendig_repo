@@ -1,7 +1,7 @@
 package com.repo.trending.db.dao
 
 import androidx.room.*
-import com.repo.trending.model.MediatorKey
+import com.repo.trending.ui.common_model.MediatorKey
 
 @Dao
 interface RemoteMediatorRepoDao {
@@ -10,7 +10,7 @@ interface RemoteMediatorRepoDao {
     suspend fun insertAll(dogs:List<MediatorKey>)
 
     @Query("SELECT * FROM remote_key WHERE id =:id ")
-    suspend fun getMediatorKey(id:Long):MediatorKey
+    suspend fun getMediatorKey(id:Long): MediatorKey
 
     @Query("DELETE FROM remote_key")
     suspend fun clearAll()

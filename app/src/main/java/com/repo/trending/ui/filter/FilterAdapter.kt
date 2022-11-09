@@ -1,10 +1,10 @@
-package com.repo.trending.ui.filter.adapter
+package com.repo.trending.ui.filter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.repo.trending.databinding.ItemRepoBinding
-import com.repo.trending.model.Repo
+import com.repo.trending.ui.common_model.Repo
 
 class FilterAdapter(private val clicked: (Repo?) -> Unit):RecyclerView.Adapter<FilterAdapter.RepoViewHolder>() {
 
@@ -13,7 +13,6 @@ class FilterAdapter(private val clicked: (Repo?) -> Unit):RecyclerView.Adapter<F
     inner class RepoViewHolder(private val binding: ItemRepoBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(data: Repo, position: Int) {
             binding.repo = data
-
             binding.let {
                 it.root.setOnClickListener {
                     data.isChecked =true

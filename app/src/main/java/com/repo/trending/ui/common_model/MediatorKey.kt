@@ -1,4 +1,4 @@
-package com.repo.trending.model
+package com.repo.trending.ui.common_model
 
 import android.os.Parcelable
 import androidx.room.Entity
