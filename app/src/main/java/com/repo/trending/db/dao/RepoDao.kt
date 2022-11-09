@@ -1,10 +1,8 @@
 package com.repo.trending.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.repo.trending.model.Repo
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RepoDao {

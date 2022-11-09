@@ -3,7 +3,7 @@ package com.repo.trending.repo
 import com.repo.trending.model.TrendRepoResponse
 
 
-interface TrendAPIRepo {
+interface TrendRESTAPIRepo {
 
     suspend fun getTrendingRepo(page:Int): TrendRepoResponse
 

@@ -11,22 +11,21 @@ import com.repo.trending.di.SharedPrefrence
 import com.repo.trending.model.MediatorKey
 import com.repo.trending.model.Repo
 import com.repo.trending.repo.MediatorKeyRepo
-import com.repo.trending.repo.TrendAPIRepo
-import com.repo.trending.repo.TrendingRepo
+import com.repo.trending.repo.TrendRESTAPIRepo
+import com.repo.trending.repo.TrendingDBRepo
 import com.repo.trending.utils.Constants
 import com.repo.trending.utils.DateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.Calendar
 import java.util.Date
 
 @OptIn(ExperimentalPagingApi::class)
 class RepoMediator(
     private val mediatorKeyRepo: MediatorKeyRepo,
-    private val trendingRepo: TrendingRepo,
-    private val trendAPIRepo: TrendAPIRepo,
+    private val trendingRepo: TrendingDBRepo,
+    private val trendAPIRepo: TrendRESTAPIRepo,
     private val repoDatabase: RepoDatabase,
     private val sharedPreferences: SharedPreferences
 ) : RemoteMediator<Int, Repo>() {
@@ -87,8 +86,6 @@ class RepoMediator(
                 getRefreshData(state)?.nextKey?.minus(1) ?: 1
             }
             LoadType.PREPEND -> {
-//                getPrependData(state)?.prevKey
-//                    ?: MediatorResult.Success(endOfPaginationReached = false)
                 return MediatorResult.Success(true)
             }
             LoadType.APPEND -> {
@@ -105,7 +102,6 @@ class RepoMediator(
             state.anchorPosition?.let { position ->
                 state.closestItemToPosition(position)?.id?.let { id ->
                     mediatorKeyRepo.getMediatorKey(id)
-//                    repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(id) }
                 }
             }
         }
@@ -117,18 +113,8 @@ class RepoMediator(
 
              state.lastItemOrNull()?.let { repo ->
                  mediatorKeyRepo.getMediatorKey(repo.id)
-//                repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(repo.id) }
             }
         }
     }
 
-    private suspend fun getPrependData(state: PagingState<Int, Repo>): MediatorKey? {
-
-        return withContext(Dispatchers.IO) {
-
-            state.firstItemOrNull()?.let { repo ->
-                repoDatabase.withTransaction { repoDatabase.remoteMediatorDao().getMediatorKey(repo.id) }
-            }
-        }
-    }
 }

@@ -32,7 +32,7 @@ class FilterAdapter(private val clicked: (Repo?) -> Unit):RecyclerView.Adapter<F
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        val item = mainList[position]?:return
+        val item = mainList[position]
         holder.bind(item,position)
     }
 

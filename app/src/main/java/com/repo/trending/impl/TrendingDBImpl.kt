@@ -1,14 +1,11 @@
 package com.repo.trending.impl
 
 import androidx.paging.*
-import com.repo.trending.db.RepoDatabase
 import com.repo.trending.db.dao.RepoDao
-import com.repo.trending.db.mediator.RepoMediator
 import com.repo.trending.model.Repo
-import com.repo.trending.repo.TrendingRepo
-import kotlinx.coroutines.flow.Flow
+import com.repo.trending.repo.TrendingDBRepo
 
-class TrendingImpl(private val repoDao: RepoDao):TrendingRepo {
+class TrendingDBImpl(private val repoDao: RepoDao):TrendingDBRepo {
     override suspend fun insert(item: Repo) = repoDao.insert(item)
 
     override suspend fun delete(item: Repo) = repoDao.delete(item)

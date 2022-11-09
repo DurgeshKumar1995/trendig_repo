@@ -70,8 +70,6 @@ class FilterActivity : AppCompatActivity() {
 @CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> {
     return callbackFlow {
-//        checkMainThread()
-
         val listener = doOnTextChanged { text, _, _, _ -> trySend(text) }
         awaitClose { removeTextChangedListener(listener) }
     }.onStart { emit(text) }

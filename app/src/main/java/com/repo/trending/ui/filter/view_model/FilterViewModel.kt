@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.repo.trending.model.Repo
-import com.repo.trending.repo.TrendingRepo
+import com.repo.trending.repo.TrendingDBRepo
 import kotlinx.coroutines.launch
 
-class FilterViewModel( private val trendingRepo: TrendingRepo) : ViewModel() {
+class FilterViewModel( private val trendingRepo: TrendingDBRepo) : ViewModel() {
 
-    private val _updatePoint = MutableLiveData<Boolean>()
-    val refreshPoint : LiveData<Boolean> = _updatePoint
 
     private val _dataList = MutableLiveData<List<Repo>>()
     val dataList : LiveData<List<Repo>> = _dataList
@@ -25,8 +23,7 @@ class FilterViewModel( private val trendingRepo: TrendingRepo) : ViewModel() {
 
     fun updateRepo(repo: Repo){
         viewModelScope.launch {
-            val value = trendingRepo.update(repo)
-            _updatePoint.postValue(value>0)
+            trendingRepo.update(repo)
         }
     }
 

@@ -1,6 +1,5 @@
 package com.repo.trending.di
 
-import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.repo.trending.network.InterfaceGlobalAPI
@@ -17,8 +16,8 @@ import okhttp3.OkHttpClient
 
 object NetworkModule {
 
-    const val WaitTimeOut: Long = 30
-    const val ConnTimeOut: Long = 10
+    private const val WaitTimeOut: Long = 30
+    private const val ConnTimeOut: Long = 10
 
     val networkModule = module {
 

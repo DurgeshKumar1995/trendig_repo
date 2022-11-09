@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.repo.trending.db.mediator.RepoMediator
 import com.repo.trending.model.Repo
-import com.repo.trending.repo.TrendingRepo
+import com.repo.trending.repo.TrendingDBRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagingApi::class)
-class MainViewModel(private val repoMediator: RepoMediator, private val trendingRepo: TrendingRepo) : ViewModel() {
+class MainViewModel(private val repoMediator: RepoMediator, private val trendingRepo: TrendingDBRepo) : ViewModel() {
 
 
     private val _updatePoint = MutableLiveData<Boolean>()

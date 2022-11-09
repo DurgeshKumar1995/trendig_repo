@@ -1,6 +1,5 @@
 package com.repo.trending.network
 
-import com.repo.trending.model.Repo
 import com.repo.trending.model.TrendRepoResponse
 import retrofit2.http.*
 

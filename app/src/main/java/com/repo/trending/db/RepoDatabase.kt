@@ -9,7 +9,7 @@ import com.repo.trending.model.MediatorKey
 import com.repo.trending.model.Repo
 
 @Database(entities = [Repo::class,MediatorKey::class], version = 1, exportSchema = false)
-@TypeConverters(OwnConverter::class)
+@TypeConverters(OwnerConverter::class)
 abstract class RepoDatabase : RoomDatabase() {
 
     abstract fun repoDao() : RepoDao
