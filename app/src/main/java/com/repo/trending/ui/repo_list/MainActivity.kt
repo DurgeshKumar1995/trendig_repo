@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
             }
             lifecycleScope.launch {
                 adapter.loadStateFlow.collectLatest { loadStates ->
-                    binding.progress.isVisible = loadStates.refresh is LoadState.Loading
                     binding.retryButton.isVisible = loadStates.refresh !is LoadState.Loading
                     binding.errorMsg.isVisible = loadStates.refresh is LoadState.Error
 
