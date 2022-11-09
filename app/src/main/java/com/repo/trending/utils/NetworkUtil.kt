@@ -7,6 +7,7 @@ import android.os.Build
 
 object NetworkUtil {
 
+    @Suppress("DEPRECATION")
     fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
